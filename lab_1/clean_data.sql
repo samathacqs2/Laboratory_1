@@ -17,9 +17,29 @@ FROM Online_Retail;
 --135080 null values in customer ID
 --1454 null values in Description
 
--- Count null values and invalid rows
+-- Step 1: Diagnose issues
 SELECT
     COUNT(*) AS total_rows,
+    COUNT(*) - COUNT(Description) AS Description_nulls,
+    COUNT(*) - COUNT(CustomerID) AS CustomerID_nulls,
+    SUM(CASE WHEN Quantity <= 0 THEN 1 ELSE 0 END) AS invalid_quantity_rows,
+    SUM(CASE WHEN UnitPrice <= 0 THEN 1 ELSE 0 END) AS invalid_unitprice_rows
+FROM Online_Retail;
+
+-- Step 2: Imputation for NULLs
+UPDATE Online_Retail SET CustomerID = -1 WHERE CustomerID IS NULL;
+UPDATE Online_Retail SET Description = 'unknown product' WHERE Description IS NULL;
+
+-- Step 3: Remove inconsistent transactions
+DELETE FROM Online_Retail WHERE Quantity <= 0 OR UnitPrice <= 0;
+
+-- Optional: Step 4: Add calculated feature (TotalValue)
+ALTER TABLE Online_Retail ADD COLUMN TotalValue FLOAT;
+UPDATE Online_Retail SET TotalValue = Quantity * UnitPrice;
+
+-- Final check after cleaning
+SELECT
+    COUNT(*) AS total_cleaned_rows,
     COUNT(*) - COUNT(Description) AS Description_nulls,
     COUNT(*) - COUNT(CustomerID) AS CustomerID_nulls,
     SUM(CASE WHEN Quantity <= 0 THEN 1 ELSE 0 END) AS invalid_quantity_rows,
