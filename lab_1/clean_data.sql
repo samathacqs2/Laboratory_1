@@ -17,7 +17,7 @@ FROM Online_Retail;
 --135080 null values in customer ID
 --1454 null values in Description
 
--- Step 1: Diagnose issues
+-- Diagnose issues
 SELECT
     COUNT(*) AS total_rows,
     COUNT(*) - COUNT(Description) AS Description_nulls,
@@ -26,14 +26,14 @@ SELECT
     SUM(CASE WHEN UnitPrice <= 0 THEN 1 ELSE 0 END) AS invalid_unitprice_rows
 FROM Online_Retail;
 
--- Step 2: Imputation for NULLs
+-- Imputation for NULLs
 UPDATE Online_Retail SET CustomerID = -1 WHERE CustomerID IS NULL;
 UPDATE Online_Retail SET Description = 'unknown product' WHERE Description IS NULL;
 
--- Step 3: Remove inconsistent transactions
+-- Remove inconsistent transactions
 DELETE FROM Online_Retail WHERE Quantity <= 0 OR UnitPrice <= 0;
 
--- Optional: Step 4: Add calculated feature (TotalValue)
+-- Add calculated feature (TotalValue)
 ALTER TABLE Online_Retail ADD COLUMN TotalValue FLOAT;
 UPDATE Online_Retail SET TotalValue = Quantity * UnitPrice;
 
