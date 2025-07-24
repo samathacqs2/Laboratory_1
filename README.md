@@ -1,4 +1,4 @@
-## Analisis de el dataset
+## Analisis de 'Online Retail' dataset
 El dataset 'Online_Retail' contiene 530 104 registros de transacciones de una tienda minorista en línea con sede en el Reino Unido, que abarcan el periodo comprendido entre el 1 de diciembre de 2010 y el 9 de diciembre de 2011. Documenta compras individuales realizadas por clientes de varios países, aunque la mayoría de las transacciones se concentran en el Reino Unido. Los datos parecen pueden dar pie a tareas como el análisis de ventas, la elaboración de perfiles de clientes o el desarrollo de estrategias empresariales.
 
 A continuacion es posible observar la variacion durante el tiempo de ventas en total durante los distintos meses desde diciembre del 2010, hasta diciembre del 2011.
